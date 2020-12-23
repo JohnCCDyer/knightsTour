@@ -6,7 +6,7 @@ int **board;
 int size;
 
 
-void record(int step, int loc[2]);
+bool record(int step, int loc[2]);
 
 int possibilities(int loc[2]);
 
@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
 		}
 		step ++;
 	}
-
+	
 	cout << "The solution is:" << endl << endl;
 	//output array
 	for(int i = 0;i<y;i++)
@@ -74,13 +74,84 @@ bool record(int step, int loc[2])
 	int choices = possibilities(loc);
 	if(choices ==0 && step < size)
 		return false;
-	for(int i =0;i<16;i++)
+	/*for(int i =0;i<16;i++)
 	{
 		next[i]=-1;
 	}
+	probably not necessary code
+	*/
 	int nextIndex=0;
 	//find the possible jumps from the current location
-	if(
+	if(loc[1]-2>=0)
+	{
+		if(loc[0]-1>=0)
+			next[nextIndex]=loc[0]-1;
+			next[nextIndex+1]=loc[1]-2;
+			nextIndex+=2;
+		if(loc[0]+1<x)
+			next[nextIndex]=loc[0]+1;
+			next[nextIndex+1]=loc[1]-2;
+			nextIndex+=2;
+	}
+	if(loc[1]+2<y)
+	{
+		if(loc[0]-1>=0)
+			next[nextIndex]=loc[0]-1;
+			next[nextIndex+1]=loc[1]+2;
+			nextIndex+=2;
+		if(loc[0]+1<x)
+			next[nextIndex]=loc[0]+1;
+			next[nextIndex+1]=loc[1]+2;
+			nextIndex+=2;
+	}
+	if(loc[0]-2>=0)
+	{
+		if(loc[1]-1>=0)
+			next[nextIndex]=loc[0]-2;
+			next[nextIndex+1]=loc[1]-1;
+			nextIndex+=2;
+		if(loc[1]+1<y)
+			next[nextIndex]=loc[0]-2;
+			next[nextIndex+1]=loc[1]+1;
+			nextIndex+=2;
+	}
+	if(loc[0]+2<x)
+	{
+		if(loc[1]-1>=0)
+			next[nextIndex]=loc[0]+2;
+			next[nextIndex+1]=loc[1]-1;
+			nextIndex+=2;
+		if(loc[1]+1<y)
+			next[nextIndex]=loc[0]+2;
+			next[nextIndex+1]=loc[1]+1;
+			nextIndex+=2;
+	}
+	int lowest = 0;
+	int lowestIndex=0;
+	nextIndex=0;
+	int testPlace[2];
+	while(nextIndex<choices*2)
+	{
+		testPlace[0]=next[nextIndex];
+		testPlace[1]=next[nextIndex+1];
+		nextIndex+=2;
+		int curVal=possibilities(testPlace);
+		if(curVal==1)
+		{
+			board[loc[0]][loc[1]]=step;
+			loc=testPlace;
+			return true;
+		}
+		if(curVal<lowest)
+		{
+			lowest=curVal;
+			lowestIndex=nextIndex-2;
+		}
+	}
+	board[loc[0]][loc[1]]=step;
+	loc[0]=next[lowestIndex];
+	loc[1]=next[lowestIndex+1];
+	return true;
 }
 
 //returns number of possible moves from the specified position

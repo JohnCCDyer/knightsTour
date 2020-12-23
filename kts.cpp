@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+//initialize global values
 int x, y;
 int **board;
 int size;
@@ -74,14 +75,9 @@ bool record(int step, int loc[2])
 	int choices = possibilities(loc);
 	if(choices ==0 && step < size)
 		return false;
-	/*for(int i =0;i<16;i++)
-	{
-		next[i]=-1;
-	}
-	probably not necessary code
-	*/
 	int nextIndex=0;
 	//find the possible jumps from the current location
+	//****ADD IN CHECK FOR NOT VISITED********
 	if(loc[1]-2>=0)
 	{
 		if(loc[0]-1>=0)
@@ -126,6 +122,7 @@ bool record(int step, int loc[2])
 			next[nextIndex+1]=loc[1]+1;
 			nextIndex+=2;
 	}
+	//initialize important comparison values
 	int lowest = 0;
 	int lowestIndex=0;
 	nextIndex=0;
@@ -136,6 +133,7 @@ bool record(int step, int loc[2])
 		testPlace[1]=next[nextIndex+1];
 		nextIndex+=2;
 		int curVal=possibilities(testPlace);
+		//if the possible jumps is 1, then it's a clear shot
 		if(curVal==1)
 		{
 			board[loc[0]][loc[1]]=step;
@@ -155,6 +153,7 @@ bool record(int step, int loc[2])
 }
 
 //returns number of possible moves from the specified position
+//************ADD IN CHECK FOR NOT VISITED*************
 int possibilities(int loc[2])
 {
 	int num = 0;

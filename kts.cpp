@@ -43,8 +43,6 @@ int main(int argc, char * argv[])
 	int step = 0;
 
 	//record the solution onto the created board
-	//**********SIZE CHANGED TO SIZE-1
-	//**********BLAME IF BOARD PRINTS UNFINISHED*********
 	while(step<size-1)
 	{
 		bool success = record(step,location);
@@ -56,6 +54,7 @@ int main(int argc, char * argv[])
 		step ++;
 	}
 	
+	board[location[0]][location[1]]=step;
 	cout << "The solution is:" << endl << endl;
 	//output array and clean array
 	print();
@@ -76,53 +75,68 @@ bool record(int step, int loc[2])
 	int xtemp = loc[0];
 	int ytemp = loc[1];
 	//find the possible jumps from the current location
-	//*******MAKE UNMARKED CHECK AFTER BOUNDS CHECK*******
 	if(loc[1]-2>=0)
 	{
 		if(loc[0]-1>=0&&board[xtemp-1][ytemp-2]==-1)
+		{
 			next[nextIndex]=loc[0]-1;
 			next[nextIndex+1]=loc[1]-2;
 			nextIndex+=2;
+		}
 		if(loc[0]+1<x&&board[xtemp+1][ytemp-2]==-1)
+		{
 			next[nextIndex]=loc[0]+1;
 			next[nextIndex+1]=loc[1]-2;
 			nextIndex+=2;
+		}
 	}
 	if(loc[1]+2<y)
 	{
 		if(loc[0]-1>=0&&board[xtemp-1][ytemp+2]==-1)
+		{
 			next[nextIndex]=loc[0]-1;
 			next[nextIndex+1]=loc[1]+2;
 			nextIndex+=2;
+		}
 		if(loc[0]+1<x&&board[xtemp+1][ytemp+2]==-1)
+		{
 			next[nextIndex]=loc[0]+1;
 			next[nextIndex+1]=loc[1]+2;
 			nextIndex+=2;
+		}
 	}
 	if(loc[0]-2>=0)
 	{
 		if(loc[1]-1>=0&&board[xtemp-2][ytemp-1]==-1)
+		{
 			next[nextIndex]=loc[0]-2;
 			next[nextIndex+1]=loc[1]-1;
 			nextIndex+=2;
+		}
 		if(loc[1]+1<y&&board[xtemp-2][ytemp+1]==-1)
+		{
 			next[nextIndex]=loc[0]-2;
 			next[nextIndex+1]=loc[1]+1;
 			nextIndex+=2;
+		}
 	}
 	if(loc[0]+2<x)
 	{
 		if(loc[1]-1>=0&&board[xtemp+2][ytemp-1]==-1)
+		{
 			next[nextIndex]=loc[0]+2;
 			next[nextIndex+1]=loc[1]-1;
 			nextIndex+=2;
+		}
 		if(loc[1]+1<y&&board[xtemp+2][ytemp+1]==-1)
+		{
 			next[nextIndex]=loc[0]+2;
 			next[nextIndex+1]=loc[1]+1;
 			nextIndex+=2;
+		}
 	}
 	//initialize important comparison values
-	int lowest = 0;
+	int lowest = 9;
 	int lowestIndex=0;
 	nextIndex=0;
 	int testPlace[2];
@@ -136,7 +150,8 @@ bool record(int step, int loc[2])
 		if(curVal==1)
 		{
 			board[loc[0]][loc[1]]=step;
-			loc=testPlace;
+			loc[0]=testPlace[0];
+			loc[1]=testPlace[1];
 			return true;
 		}
 		if(curVal<lowest)
@@ -152,7 +167,6 @@ bool record(int step, int loc[2])
 }
 
 //returns number of possible moves from the specified position
-//************MAKE UNMARKED CHECK AFTER BOUNDS CHECK*************
 int possibilities(int loc[2])
 {
 	int num = 0;
@@ -188,7 +202,8 @@ int possibilities(int loc[2])
 	}
 	return num;
 }
-
+//prints the array. 
+//*******ADD IN FORMATTING FOR READABILITY*********
 void print()
 {
 	for(int i = 0;i<y;i++)
@@ -196,6 +211,8 @@ void print()
 		for(int j = 0;j<x;j++)
 		{
 			cout << board[j][i];
+			if(j!=x-1)
+				cout << ",";
 		}
 		cout << endl;
 	}

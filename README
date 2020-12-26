@@ -1,9 +1,12 @@
 This is a program that solves knight's tour puzzles.
 
 debug log:
-	*make check for unused space after checking for bounds of array
+	^make check for unused space after checking for bounds of array
+	^The solutions are correct up until the last two steps, where it
+		prints the last step on the second to last step, and a -1
+		on the last step
 
 To come:
 	control of board size with arrow keys.
 	control of where the knight starts.
-
+	better readability/options for display
